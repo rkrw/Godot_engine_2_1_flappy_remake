@@ -1,0 +1,378 @@
+[gd_scene load_steps=17 format=1]
+
+[ext_resource path="res://script/main.gd" type="Script" id=1]
+[ext_resource path="res://art/BG.png" type="Texture" id=2]
+[ext_resource path="res://art/map4.png" type="Texture" id=3]
+[ext_resource path="res://art/map3.png" type="Texture" id=4]
+[ext_resource path="res://art/moon.png" type="Texture" id=5]
+[ext_resource path="res://scene/player.tscn" type="PackedScene" id=6]
+[ext_resource path="res://font/liliput_steps_72.fnt" type="BitmapFont" id=7]
+[ext_resource path="res://sound/kill.ogg" type="AudioStream" id=8]
+[ext_resource path="res://art/Button/g10557.png" type="Texture" id=9]
+[ext_resource path="res://art/Button/g10783.png" type="Texture" id=10]
+[ext_resource path="res://art/Button/g1452.png" type="Texture" id=11]
+[ext_resource path="res://art/Button/g2030.png" type="Texture" id=12]
+
+[sub_resource type="Animation" id=1]
+
+resource/name = "run"
+length = 5.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("ground:region_rect")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 5 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 512, 128 ), Rect2( 1024, 0, 512, 128 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Building BG:region_rect")
+tracks/1/interp = 1
+tracks/1/imported = false
+tracks/1/keys = {
+"times": FloatArray( 0, 5 ),
+"transitions": FloatArray( 1, 1 ),
+"update": 0,
+"values": [ Rect2( 0, 0, 512, 128 ), Rect2( 512, 0, 512, 128 ) ]
+}
+
+[sub_resource type="RectangleShape2D" id=2]
+
+custom_solver_bias = 0.0
+extents = Vector2( 262.307, 76.3155 )
+
+[sub_resource type="Animation" id=3]
+
+resource/name = "flash"
+length = 1.2
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.1, 0.6, 0.7, 1.2 ),
+"transitions": FloatArray( 1, 1, 1, 1, 1 ),
+"update": 0,
+"values": [ Color( 1, 1, 1, 0.163922 ), Color( 1, 1, 1, 0.890706 ), Color( 1, 1, 1, 0 ), Color( 0.015625, 0, 0, 0.131137 ), Color( 0.015625, 0, 0, 0.606549 ) ]
+}
+
+[sub_resource type="Animation" id=4]
+
+resource/name = "Alert"
+length = 1.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("label:visibility/opacity")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.5, 1 ),
+"transitions": FloatArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.5, 1.0 ]
+}
+
+[node name="main" type="Node2D"]
+
+transform/pos = Vector2( 0, 6 )
+script/script = ExtResource( 1 )
+tube_count = 2
+tube_count_bonus = 1
+bat_count = 2
+
+[node name="ground" type="Node2D" parent="."]
+
+editor/display_folded = true
+
+[node name="Main BG" type="Sprite" parent="ground"]
+
+transform/pos = Vector2( 204.738, 261.87 )
+transform/scale = Vector2( 0.918715, 4.63942 )
+texture = ExtResource( 2 )
+region = true
+region_rect = Rect2( 512, 0, 512, 128 )
+
+[node name="Building BG" type="Sprite" parent="ground"]
+
+transform/pos = Vector2( 252.289, 479.464 )
+texture = ExtResource( 3 )
+region = true
+region_rect = Rect2( 0, 0, 512, 128 )
+
+[node name="ground" type="Sprite" parent="ground"]
+
+transform/pos = Vector2( 0, 542.523 )
+texture = ExtResource( 4 )
+centered = false
+region = true
+region_rect = Rect2( 0, 0, 512, 128 )
+
+[node name="Astronomic" type="Sprite" parent="ground"]
+
+transform/pos = Vector2( 205.95, 288.643 )
+transform/scale = Vector2( 0.36904, 0.36904 )
+texture = ExtResource( 5 )
+
+[node name="anim" type="AnimationPlayer" parent="ground"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/run = SubResource( 1 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "run"
+
+[node name="static" type="Area2D" parent="ground"]
+
+input/pickable = false
+shapes/0/shape = SubResource( 2 )
+shapes/0/transform = Matrix32( 1, 0, 0, 1, 242.58, 602.861 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="col" type="CollisionShape2D" parent="ground/static"]
+
+transform/pos = Vector2( 242.58, 602.861 )
+shape = SubResource( 2 )
+trigger = false
+_update_shape_index = 0
+
+[node name="tubesD" type="Node2D" parent="."]
+
+[node name="bats" type="Node2D" parent="."]
+
+[node name="tubes" type="Node2D" parent="."]
+
+transform/pos = Vector2( 0, -49 )
+
+[node name="player" parent="." instance=ExtResource( 6 )]
+
+transform/pos = Vector2( 202, 290 )
+mass = 20.0
+
+[node name="start_time" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 2.0
+one_shot = true
+autostart = false
+
+[node name="dead_time" type="Timer" parent="."]
+
+process_mode = 1
+wait_time = 0.5
+one_shot = true
+autostart = false
+
+[node name="flash" type="Polygon2D" parent="."]
+
+transform/pos = Vector2( -5.39182, -26.3616 )
+transform/rot = -0.0339148
+transform/scale = Vector2( 1.02677, 1.08897 )
+polygon = Vector2Array( -3.13725, -7.32868, 0, 594, 400, 594, 400, -6 )
+uv = Vector2Array(  )
+color = Color( 0.984375, 0.968994, 0.968994, 0 )
+vertex_colors = ColorArray(  )
+offset = Vector2( 0, 0 )
+texture/texture = null
+texture/offset = Vector2( 0, 0 )
+texture/scale = Vector2( 1, 1 )
+texture/rotation = -1.3
+invert/enable = false
+invert/border = 100.0
+
+[node name="anim" type="AnimationPlayer" parent="flash"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/flash = SubResource( 3 )
+playback/active = true
+playback/speed = 2.0
+blend_times = [  ]
+autoplay = ""
+
+[node name="label" type="Label" parent="."]
+
+anchor/right = 1
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 142.0
+margin/right = -742.0
+margin/bottom = 1102.0
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color = Color( 1, 0.0117188, 0.0117188, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 4
+custom_constants/line_spacing = 4
+custom_constants/shadow_offset_y = 4
+custom_constants/shadow_as_outline = 4
+text = "
+"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="score" type="Label" parent="."]
+
+anchor/right = 1
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 142.0
+margin/right = -742.0
+margin/bottom = 1102.0
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 4
+custom_constants/line_spacing = 4
+custom_constants/shadow_offset_y = 4
+custom_constants/shadow_as_outline = 4
+text = "
+"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="notif" type="Label" parent="."]
+
+anchor/right = 1
+rect/scale = Vector2( 0.5, 0.5 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = 0.0
+margin/top = 142.0
+margin/right = -742.0
+margin/bottom = 1102.0
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 4
+custom_constants/line_spacing = 4
+custom_constants/shadow_offset_y = 4
+custom_constants/shadow_as_outline = 4
+text = "
+"
+align = 1
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="kill" type="StreamPlayer" parent="."]
+
+stream/stream = ExtResource( 8 )
+stream/play = false
+stream/loop = false
+stream/volume_db = 0.0
+stream/autoplay = false
+stream/paused = false
+stream/loop_restart_time = 0.0
+stream/buffering_ms = 500
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/Alert = SubResource( 4 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "Alert"
+
+[node name="Alert" type="Sprite" parent="."]
+
+transform/pos = Vector2( 200, 84 )
+transform/scale = Vector2( 0.3, 0.3 )
+texture = ExtResource( 9 )
+
+[node name="lose" type="Sprite" parent="."]
+
+transform/pos = Vector2( 200, 284 )
+transform/scale = Vector2( 0.38, 0.38 )
+texture = ExtResource( 10 )
+
+[node name="exit" type="Button" parent="lose"]
+
+rect/scale = Vector2( 2.5, 2.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = 110.0
+margin/top = 158.0
+margin/right = 166.0
+margin/bottom = 208.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 11 )
+flat = true
+
+[node name="retry" type="Button" parent="lose"]
+
+rect/scale = Vector2( 2.5, 2.5 )
+focus/ignore_mouse = false
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 2
+margin/left = -221.0
+margin/top = 158.0
+margin/right = -165.0
+margin/bottom = 208.0
+toggle_mode = false
+enabled_focus_mode = 2
+shortcut = null
+icon = ExtResource( 12 )
+flat = true
+
+[node name="announce" type="Label" parent="lose"]
+
+rect/scale = Vector2( 0.7, 0.7 )
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -211.0
+margin/top = -190.0
+margin/right = 258.0
+margin/bottom = -18.0
+custom_fonts/font = ExtResource( 7 )
+text = "test"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[connection signal="body_enter" from="ground/static" to="." method="kill_ground"]
+
+[connection signal="timeout" from="start_time" to="." method="_on_start_time_timeout"]
+
+[connection signal="timeout" from="dead_time" to="." method="_on_dead_time_timeout"]
+
+[connection signal="pressed" from="lose/exit" to="." method="_on_exit_pressed"]
+
+[connection signal="pressed" from="lose/retry" to="." method="_on_retry_pressed"]
+
+

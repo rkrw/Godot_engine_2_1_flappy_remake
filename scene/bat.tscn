@@ -1,0 +1,123 @@
+[gd_scene load_steps=26 format=1]
+
+[ext_resource path="res://scene/bat.gd" type="Script" id=1]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_000.png" type="Texture" id=2]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_001.png" type="Texture" id=3]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_002.png" type="Texture" id=4]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_003.png" type="Texture" id=5]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_004.png" type="Texture" id=6]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_005.png" type="Texture" id=7]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_006.png" type="Texture" id=8]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_007.png" type="Texture" id=9]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_008.png" type="Texture" id=10]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_009.png" type="Texture" id=11]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_010.png" type="Texture" id=12]
+[ext_resource path="res://art/01-Idle/__Bat02_Idle_011.png" type="Texture" id=13]
+[ext_resource path="res://art/05-Die/__Bat02_Die_000.png" type="Texture" id=14]
+[ext_resource path="res://art/05-Die/__Bat02_Die_001.png" type="Texture" id=15]
+[ext_resource path="res://art/05-Die/__Bat02_Die_002.png" type="Texture" id=16]
+[ext_resource path="res://art/05-Die/__Bat02_Die_003.png" type="Texture" id=17]
+[ext_resource path="res://art/05-Die/__Bat02_Die_004.png" type="Texture" id=18]
+[ext_resource path="res://art/05-Die/__Bat02_Die_005.png" type="Texture" id=19]
+[ext_resource path="res://art/05-Die/__Bat02_Die_006.png" type="Texture" id=20]
+[ext_resource path="res://art/05-Die/__Bat02_Die_007.png" type="Texture" id=21]
+
+[sub_resource type="CircleShape2D" id=1]
+
+custom_solver_bias = 0.0
+radius = 10.0
+
+[sub_resource type="SpriteFrames" id=2]
+
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 5 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 12 ), ExtResource( 13 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 16 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="Animation" id=3]
+
+resource/name = "Idle"
+length = 1.1
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:frame")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1 ),
+"transitions": FloatArray( 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11 ]
+}
+
+[sub_resource type="Animation" id=4]
+
+resource/name = "die"
+length = 1.0
+loop = false
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath("AnimatedSprite:frame")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6 ),
+"transitions": FloatArray( 1, 1, 1, 1, 1, 1, 1 ),
+"update": 1,
+"values": [ 13, 14, 15, 16, 17, 18, 19 ]
+}
+
+[node name="bat" type="Node2D"]
+
+script/script = ExtResource( 1 )
+speed = 400
+bat_wight = 120
+
+[node name="Area2D" type="Area2D" parent="."]
+
+transform/pos = Vector2( -1.46144, 1.46144 )
+transform/scale = Vector2( 0.95433, 0.95433 )
+input/pickable = true
+shapes/0/shape = SubResource( 1 )
+shapes/0/transform = Matrix32( 1.55225, 0, 0, 1.55225, 7.73681, 7.43042 )
+shapes/0/trigger = false
+gravity_vec = Vector2( 0, 1 )
+gravity = 98.0
+linear_damp = 0.1
+angular_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+
+transform/pos = Vector2( 7.73681, 7.43042 )
+transform/scale = Vector2( 1.55225, 1.55225 )
+shape = SubResource( 1 )
+trigger = false
+_update_shape_index = 0
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+
+transform/pos = Vector2( 4.95087, 11.0671 )
+transform/scale = Vector2( 0.123558, 0.123558 )
+frames = SubResource( 2 )
+animation = "default"
+frame = 17
+flip_h = true
+
+[node name="anim" type="AnimationPlayer" parent="."]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/Idle = SubResource( 3 )
+anims/die = SubResource( 4 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "Idle"
+
+[connection signal="body_enter" from="Area2D" to="." method="_on_Area2D_body_enter"]
+
+
