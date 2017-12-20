@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=1]
+[gd_scene load_steps=21 format=1]
 
 [ext_resource path="res://script/main.gd" type="Script" id=1]
 [ext_resource path="res://art/BG.png" type="Texture" id=2]
@@ -10,8 +10,11 @@
 [ext_resource path="res://sound/kill.ogg" type="AudioStream" id=8]
 [ext_resource path="res://art/Button/g10557.png" type="Texture" id=9]
 [ext_resource path="res://art/Button/g10783.png" type="Texture" id=10]
-[ext_resource path="res://art/Button/g1452.png" type="Texture" id=11]
-[ext_resource path="res://art/Button/g2030.png" type="Texture" id=12]
+[ext_resource path="res://art/Button/g12409.png" type="Texture" id=11]
+[ext_resource path="res://art/Button/g12396.png" type="Texture" id=12]
+[ext_resource path="res://art/Button/g12465.png" type="Texture" id=13]
+[ext_resource path="res://art/Button/g12477.png" type="Texture" id=14]
+[ext_resource path="res://art/Button/g12869.png" type="Texture" id=15]
 
 [sub_resource type="Animation" id=1]
 
@@ -77,6 +80,23 @@ tracks/0/keys = {
 "transitions": FloatArray( 1, 1, 1 ),
 "update": 0,
 "values": [ 1.0, 0.5, 1.0 ]
+}
+
+[sub_resource type="Animation" id=5]
+
+resource/name = "hs"
+length = 1.0
+loop = true
+step = 0.1
+tracks/0/type = "value"
+tracks/0/path = NodePath(".:visibility/opacity")
+tracks/0/interp = 1
+tracks/0/imported = false
+tracks/0/keys = {
+"times": FloatArray( 0, 0.5, 0.9 ),
+"transitions": FloatArray( 1, 1, 1 ),
+"update": 0,
+"values": [ 1.0, 0.5, 0.9 ]
 }
 
 [node name="main" type="Node2D"]
@@ -178,6 +198,7 @@ autostart = false
 
 [node name="flash" type="Polygon2D" parent="."]
 
+editor/display_folded = true
 transform/pos = Vector2( -5.39182, -26.3616 )
 transform/rot = -0.0339148
 transform/scale = Vector2( 1.02677, 1.08897 )
@@ -310,43 +331,48 @@ texture = ExtResource( 9 )
 
 [node name="lose" type="Sprite" parent="."]
 
+editor/display_folded = true
 transform/pos = Vector2( 200, 284 )
 transform/scale = Vector2( 0.38, 0.38 )
 texture = ExtResource( 10 )
 
-[node name="exit" type="Button" parent="lose"]
+[node name="exit" type="TextureButton" parent="lose"]
 
-rect/scale = Vector2( 2.5, 2.5 )
+rect/scale = Vector2( 0.47, 0.47 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = 110.0
-margin/top = 158.0
-margin/right = 166.0
-margin/bottom = 208.0
+margin/top = 155.0
+margin/right = 420.0
+margin/bottom = 464.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-icon = ExtResource( 11 )
-flat = true
+textures/normal = ExtResource( 11 )
+textures/pressed = ExtResource( 12 )
+params/resize_mode = 0
+params/stretch_mode = 0
 
-[node name="retry" type="Button" parent="lose"]
+[node name="retry" type="TextureButton" parent="lose"]
 
-rect/scale = Vector2( 2.5, 2.5 )
+rect/scale = Vector2( 0.5, 0.5 )
 focus/ignore_mouse = false
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 2
 margin/left = -221.0
 margin/top = 158.0
-margin/right = -165.0
-margin/bottom = 208.0
+margin/right = 65.0
+margin/bottom = 444.0
 toggle_mode = false
 enabled_focus_mode = 2
 shortcut = null
-icon = ExtResource( 12 )
-flat = true
+textures/normal = ExtResource( 13 )
+textures/pressed = ExtResource( 14 )
+params/resize_mode = 0
+params/stretch_mode = 0
 
 [node name="announce" type="Label" parent="lose"]
 
@@ -355,15 +381,52 @@ focus/ignore_mouse = true
 focus/stop_mouse = true
 size_flags/horizontal = 2
 size_flags/vertical = 0
-margin/left = -211.0
-margin/top = -190.0
-margin/right = 258.0
-margin/bottom = -18.0
+margin/left = -260.0
+margin/top = -184.0
+margin/right = 209.0
+margin/bottom = -12.0
 custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
 text = "test"
 percent_visible = 1.0
 lines_skipped = 0
 max_lines_visible = -1
+
+[node name="note" type="Sprite" parent="."]
+
+editor/display_folded = true
+visibility/opacity = 0.9
+transform/pos = Vector2( 200, 514 )
+transform/scale = Vector2( 0.25, 0.25 )
+texture = ExtResource( 15 )
+
+[node name="hs_announce" type="Label" parent="note"]
+
+focus/ignore_mouse = true
+focus/stop_mouse = true
+size_flags/horizontal = 2
+size_flags/vertical = 0
+margin/left = -300.0
+margin/top = -156.0
+margin/right = 228.0
+margin/bottom = 18.0
+custom_fonts/font = ExtResource( 7 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "High Score"
+percent_visible = 1.0
+lines_skipped = 0
+max_lines_visible = -1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="note"]
+
+playback/process_mode = 1
+playback/default_blend_time = 0.0
+root/root = NodePath("..")
+anims/hs = SubResource( 5 )
+playback/active = true
+playback/speed = 1.0
+blend_times = [  ]
+autoplay = "hs"
 
 [connection signal="body_enter" from="ground/static" to="." method="kill_ground"]
 

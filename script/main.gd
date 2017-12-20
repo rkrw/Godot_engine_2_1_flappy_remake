@@ -57,6 +57,8 @@ onready var dead_timer = get_node("dead_time")
 onready var flash_anim = get_node("flash/anim")
 onready var ground_anim = get_node("ground/anim")
 onready var kill_sound = get_node("kill")
+onready var note = get_node("note")
+onready var high_scorer = get_node("note/hs_announce")
 
 func _ready():
 	lose.hide()
@@ -81,6 +83,11 @@ func _ready():
 	print("tube"+str(toogle_tube))
 	print("bat"+str(toogle_bat))
 	print("idx"+str(idx))
+	high_scorer.set_align(1)
+	if(user_data[idx]!=""):
+		high_scorer.set_text("High Score\n"+str(user_data[idx])+":"+str(save_data[idx]))
+	else:
+		high_scorer.set_text("No Record Yet\nMake One!")
 	set_process_input(true)
 
 func _input(event):
@@ -151,6 +158,7 @@ func _on_start_time_timeout():
 func on_tap():
 	print("tap")
 	playing = true
+	note.hide()
 	label.hide()
 	alert.hide()
 	score_board.set_text(str(score))
@@ -216,12 +224,13 @@ func kill():
 		set_process(false)
 		ground_anim.stop()
 		set_idx()
+		announce.set_align(1)
 		if score > highscore:
 			save(score,idx)
 			save_user(active_user,idx)
-			announce.set_text("\nYOU LOSE\n\nNEW\nHIGH SCORE!:\n"+str(score))
+			announce.set_text("\nYOU LOSE\n\nNEW\nHIGH SCORE!:"+str(score))
 		else:
-			announce.set_text("\nYOU LOSE\n\nYOUR SCORE:\n"+str(score)+"\nHIGH SCORE\n"+str(highscore))
+			announce.set_text("\nYOU LOSE\n\nYOUR SCORE:"+str(score)+"\nHIGH SCORE:"+str(highscore))
 			var loop = maxidx
 			while(idx<loop):
 				if(score>save_data[idx]):
@@ -274,9 +283,14 @@ func set_title():
 		label.set_text("Normal Mode!")
 	
 func _on_exit_pressed():
-	get_tree().change_scene("res://scene/ready.tscn")
+	freeing()
+	set_process(false)
+	get_tree().change_scene("res://scene/Ready.tscn")
 
+	
 func _on_retry_pressed():
+	freeing()
+	set_process(false)
 	get_tree().change_scene("res://scene/main.tscn")
 
 func _on_dead_time_timeout():
@@ -285,3 +299,17 @@ func _on_dead_time_timeout():
 
 func get_score():
 	return score
+	
+func freeing():
+	var i=0
+	while(i<tubesD.get_children().size()):
+		tubesD.get_child(i).queue_free()
+		i+=1
+	i=0
+	while(i<bats.get_children().size()):
+		bats.get_child(i).queue_free()
+		i+=1
+	i=0
+	while(i<tubes.get_children().size()):
+		tubes.get_child(i).queue_free()
+		i+=1

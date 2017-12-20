@@ -21,8 +21,7 @@ func _process(delta):
 			set_pos(Vector2(OS.get_window_size().x,-randi()%300))
 
 func _on_Area2D_body_enter( body ):
-#	current_scene.kill()
-	pass
+	current_scene.kill()
 
 func _on_Area2D2_body_enter( body ):
 	add_score_sound.play()	

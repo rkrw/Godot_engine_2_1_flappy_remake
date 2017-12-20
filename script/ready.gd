@@ -1,5 +1,4 @@
 extends Node2D
-
 export var score = 0
 var mode = 3
 var show_mode=1
@@ -23,6 +22,7 @@ var saveconfig = File.new() #file
 var config_path = "user://origin_config.save"
 var config_data = {}
 var name = config_path.get_base_dir()
+
 onready var gr = get_node("ground")
 
 var can_restart = false
@@ -44,7 +44,9 @@ onready var btn_Next = get_node("Next")
 onready var btn_Prev = get_node("Prev")
 onready var usr_name = get_node("Menu/username")
 onready var menu_reg = get_node("Menu")
-
+onready var change_usr = get_node("change")
+onready var nusr_name = get_node("change/nusername")
+onready var btn_change = get_node("TextureButton")
 #saving record
 var highscore
 
@@ -55,6 +57,7 @@ func _ready():
 	btn_Mode.hide()
 	btn_Next.hide()
 	btn_Prev.hide()
+	change_usr.hide()
 	if not saveuser.file_exists(user_path):
 		reg_user()
 	else:
@@ -91,7 +94,7 @@ func _on_Option_pressed():
 	elif mode==3:
 		label1.set_text("Normal Mode")
 	print(mode)
-
+	btn_change.hide()
 	label.hide()
 	logo.set_text("Mode\nOption")
 	btn_Ladder.hide()
@@ -125,6 +128,7 @@ func _on_Ladder_pressed():
 	btn_play.hide()
 	btn_Ladder.hide()
 	btn_Mode.hide()
+	btn_change.hide()
 	logo.set_text("Leader\nBoard")
 	if show_mode==1:
 		label.set_text("Bat Frenzy\nTop 5")
@@ -153,6 +157,7 @@ func _on_Exit_pressed():
 	label.set_text("-NIGHT-\n*/TAP/*")
 	btn_Next.hide()
 	btn_Prev.hide()
+	btn_change.show()
 	save_config(mode)
 
 
@@ -254,6 +259,7 @@ func _on_Button_pressed():
 		btn_Ladder.show()
 		btn_play.show()
 		label2.show()
+		btn_change.show()
 		new_user()
 		read_saveuser()
 		current_user = active_user
@@ -302,9 +308,46 @@ func new_user():
 	label2.set_text("Playing as\n"+current_user)
 	
 func reg_user():
+	btn_change.hide()
 	btn_play.hide()
 	label1.hide()
 	label.set_text("Welcome!")
 	btn_option.hide()
 	btn_Ladder.hide()
 	label2.hide()
+	
+func change_user(usr):
+	user_data["active"] = usr
+	saveuser.open(user_path, File.WRITE)
+	saveuser.store_var(user_data)
+	saveuser.close()
+
+func _on_Buttonb_pressed():
+	print("skip")
+	if nusr_name.get_text() != "":
+		label.set_text("-NIGHT-\n*/TAP/*")
+		menu_reg.hide()
+		change_usr.hide()
+		label.show()
+		logo.show()
+		btn_option.show()
+		btn_Ladder.show()
+		btn_play.show()
+		btn_change.show()
+		change_user(nusr_name.get_text())
+		current_user = active_user
+		read_saveuser()
+		label2.set_text("Playing as\n"+nusr_name.get_text())
+		label2.show()
+
+func _on_TextureButton_pressed():
+	nusr_name.set_align(1)
+	btn_change.hide()
+	btn_play.hide()
+	label1.hide()
+	nusr_name.set_text(active_user)
+	label.set_text("Type New User")
+	btn_option.hide()
+	btn_Ladder.hide()
+	label2.hide()
+	change_usr.show()
